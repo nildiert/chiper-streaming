@@ -4,7 +4,8 @@ const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const path = require('path')
-const port = process.env.port || 3000
+// const port = process.env.port || 3000
+const port = 3000
 
 app.use(express.static(path.join(__dirname, '/public')))
 
@@ -81,3 +82,4 @@ module.exports = async function (config) {
     categories, stream, catStr, channels, users, likes, suscriptions, roles
   }
 }
+
