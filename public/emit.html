@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+            <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+            <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { font: 13px Helvetica, Arial; }
+                form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+                form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+                form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+                #messages { list-style-type: none; margin: 0; padding: 0; }
+                #messages li { padding: 5px 10px; }
+                #messages li:nth-child(odd) { background: #eee; }
+                #messages { margin-bottom: 40px }
+              </style>        
+    </head>
+    <body>
+        <video src="" id="video" style="width:700px; height: 350px;" autoplay="true"></video>
+ 
+        <canvas style="display:none;" id="preview"></canvas>
+        <div id="logger"></div>
+    </body>
+<script type="text/javascript">
+    var canvas = document.getElementById("preview");
+    var context = canvas.getContext('2d');
+ 
+    canvas.width = 900;
+    canvas.height = 700;
+ 
+    context.width = canvas.width;
+    context.height = canvas.height;
+ 
+    var video = document.getElementById("video");
+ 
+    var socket = io();
+ 
+    function logger(msg){
+        $('#logger').text(msg);
+    }
+ 
+    function loadCamera(stream){
+      try {
+          video.srcObject = stream;
+          } catch (error) {
+       video.src = URL.createObjectURL(stream);
+          }
+       logger("Camera connected");
+    }
+ 
+    function loadFail(){
+        logger("Camera not connected");
+    }
+ 
+    function viewVideo(video,context){
+        context.drawImage(video,0,0,context.width,context.height);
+        socket.emit('stream',canvas.toDataURL('image/webp'));
+    }
+ 
+    $(function(){
+        navigator.getUserMedia = ( navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msgGetUserMedia );
+    
+        if(navigator.getUserMedia){
+            navigator.getUserMedia({video: true, audio: false},loadCamera,loadFail);
+        }
+ 
+        setInterval(function(){
+            viewVideo(video,context);
+        },5);
+    });
+ 
+</script>
+<body><p>
+    <ul id="messages"></ul>
+  </p>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <!--Emitiendo eventos-->
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script><!--cargando socket.io-client-->
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <!--capturando chat_message en cliente-->
+    <script>
+      $(function () {
+        var socket = io();
+        //de esta forma declaramos io globalmente y exponemos un endpoint este intenta conectarse al host que sirve la página
+        $('form').submit(function(e) {
+        e.preventDefault();//prevent page reloading  
+        socket.emit('chat message', $('#m').val());//evento chat_message
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      });
+    </script>
+  </body>
+</html>
