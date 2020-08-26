@@ -1,15 +1,16 @@
 # Chiper Streaming
+App de video chat streaming challenge chiper academy
 
-## modules
+![Captura de la app](./)
 
-    -sequelize nos permite construir modelos relacionales y definir unos metodos custom para hacer consultas a bases de datos definidos en los servicios que consumirán los modelos  
+## ¿Cómo funciona?
+ 
+Requiere Node.js v10
+ 
+* `npm install` para correr las dependencias.
+* `npm run dev` para entorno desarrollo.
+* `npm start` para el entorno de producción.
 
-    -Validación de datos usando middleware enviar endpoint datos que no corresponden al schema que tenemos (usamos joi y boom)
+## Licencia
 
-    ###-manejo de errores usando middleware (errorhandlers) Sentry (ya heroku permite logs)
-    
-    -JSON webTokens (jwt) y bcrypt
-
-    -test para endpoints y servicios 
-    -standard para seguimiento de errores js
-    -asegurar API e identificacion rutas sensibles
+MIT

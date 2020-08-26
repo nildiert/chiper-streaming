@@ -17,5 +17,16 @@
   "devDependencies": {
     "nodemon": "^2.0.4",
     "standard": "^14.3.4"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nildiert/chiper-streaming.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nildiert/chiper-streaming/issues"
+  },
+  "homepage": "https://github.com/nildiert/chiper-streaming#readme"
 }
